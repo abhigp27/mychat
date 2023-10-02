@@ -1,0 +1,11 @@
+spring:
+  r2dbc:
+    url: john.db.elephantsql.com:5432/azwsbywa
+    username: azwsbywa
+    password: Pu8GGbA6hyv0McXgHuX3PhTnJUbZwxP1
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/mydatabase
+#    redis:
+#      host: localhost
+#      port: 6379
