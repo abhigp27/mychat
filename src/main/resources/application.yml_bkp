@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: john.db.elephantsql.com:5432/azwsbywa
+    url: r2dbc:postgresql://john.db.elephantsql.com:5432/azwsbywa
     username: azwsbywa
     password: Pu8GGbA6hyv0McXgHuX3PhTnJUbZwxP1
 #  data:

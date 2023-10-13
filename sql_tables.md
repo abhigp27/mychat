@@ -1,3 +1,10 @@
+-- Create ENUM types for role and status
+CREATE TYPE user_role AS ENUM ('business', 'customer');
+CREATE TYPE order_status AS ENUM ('placed', 'shipped', 'delivered', 'cancelled');
+CREATE TYPE appointment_status AS ENUM ('scheduled', 'cancelled', 'completed');
+CREATE TYPE payment_status AS ENUM ('pending', 'completed', 'failed');
+
+
 -- User Table
 CREATE TABLE users (
 user_id SERIAL PRIMARY KEY,
@@ -59,5 +66,14 @@ sender_id INTEGER, -- Could be a user_id or a business_id
 text_content TEXT,
 media_url VARCHAR(512), -- URL to media (image/video/audio)
 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Media Table
+CREATE TABLE media (
+media_id SERIAL PRIMARY KEY,
+url VARCHAR(512) NOT NULL,
+type VARCHAR(50) NOT NULL,  -- 'image', 'video', 'audio'
+related_entity_id INTEGER NOT NULL,
+related_entity_type VARCHAR(50) NOT NULL  -- 'ChatMessage', 'CatalogItem', etc.
 );
 
