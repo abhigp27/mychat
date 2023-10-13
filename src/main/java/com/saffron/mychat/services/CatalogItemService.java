@@ -4,7 +4,6 @@ import com.saffron.mychat.entity.CatalogItem;
 import com.saffron.mychat.handler.CustomExceptions.BadRequestException;
 import com.saffron.mychat.handler.CustomExceptions.NotFoundException;
 import com.saffron.mychat.repository.CatalogItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,8 +11,11 @@ import reactor.core.publisher.Mono;
 @Service
 public class CatalogItemService {
 
-    @Autowired
-    private CatalogItemRepository catalogItemRepository;
+    private final CatalogItemRepository catalogItemRepository;
+
+    public CatalogItemService(CatalogItemRepository catalogItemRepository) {
+        this.catalogItemRepository = catalogItemRepository;
+    }
 
     public Mono<CatalogItem> addItem(CatalogItem item) {
         // Validate the item object

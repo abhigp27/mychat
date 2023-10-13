@@ -4,15 +4,17 @@ import com.saffron.mychat.entity.Chat;
 import com.saffron.mychat.handler.CustomExceptions.BadRequestException;
 import com.saffron.mychat.handler.CustomExceptions.NotFoundException;
 import com.saffron.mychat.repository.ChatRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
 public class ChatService {
 
-    @Autowired
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
+
+    public ChatService(ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
+    }
 
     /**
      * Creates a new Chat.

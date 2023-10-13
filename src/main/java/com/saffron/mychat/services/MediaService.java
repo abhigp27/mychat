@@ -7,11 +7,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 @Service
 public class MediaService {
 
@@ -39,7 +34,7 @@ public class MediaService {
     /**
      * Lists media associated with a related entity.
      *
-     * @param relatedEntityId the ID of the related entity
+     * @param relatedEntityId   the ID of the related entity
      * @param relatedEntityType the type of the related entity
      * @return Flux emitting the list of media
      */

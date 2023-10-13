@@ -4,7 +4,6 @@ import com.saffron.mychat.entity.Message;
 import com.saffron.mychat.handler.CustomExceptions.BadRequestException;
 import com.saffron.mychat.handler.CustomExceptions.NotFoundException;
 import com.saffron.mychat.repository.MessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,8 +11,11 @@ import reactor.core.publisher.Mono;
 @Service
 public class MessageService {
 
-    @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
+
+    public MessageService(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
+    }
 
     /**
      * Sends a new message.

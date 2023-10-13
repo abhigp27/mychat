@@ -4,7 +4,6 @@ import com.saffron.mychat.entity.Appointment;
 import com.saffron.mychat.handler.CustomExceptions.BadRequestException;
 import com.saffron.mychat.handler.CustomExceptions.NotFoundException;
 import com.saffron.mychat.repository.AppointmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,8 +11,11 @@ import reactor.core.publisher.Mono;
 @Service
 public class AppointmentService {
 
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+    private final AppointmentRepository appointmentRepository;
+
+    public AppointmentService(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     public Mono<Appointment> bookAppointment(Appointment appointment) {
         // Add any validation logic here

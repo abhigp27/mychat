@@ -4,7 +4,6 @@ import com.saffron.mychat.entity.Business;
 import com.saffron.mychat.handler.CustomExceptions.BadRequestException;
 import com.saffron.mychat.handler.CustomExceptions.NotFoundException;
 import com.saffron.mychat.repository.BusinessRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -12,8 +11,11 @@ import reactor.core.publisher.Mono;
 @Service
 public class BusinessService {
 
-    @Autowired
-    private BusinessRepository businessRepository;
+    private final BusinessRepository businessRepository;
+
+    public BusinessService(BusinessRepository businessRepository) {
+        this.businessRepository = businessRepository;
+    }
 
     public Mono<Business> registerBusiness(Business business) {
         // Add any validation logic here, such as checking if the business name or email already exists

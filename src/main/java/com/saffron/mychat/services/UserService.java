@@ -118,28 +118,3 @@ public class UserService {
                 });
     }
 }
-
-//        return userRepository.findById(userId)
-//                .switchIfEmpty(Mono.error(new NotFoundException("User with ID " + userId + " not found")))
-//                .flatMap(existingUser -> {
-//                    if (payload.containsKey("name")) {
-//                        String name = payload.get("name");
-//                        // Perform name validation here if needed
-//                        existingUser.setName(name);
-//                    }
-//
-//                    if (payload.containsKey("phone_number")) {
-//                        String phoneNumber = payload.get("phone_number");
-//                        // Perform phone number validation here if needed
-//                        existingUser.setPhoneNumber(phoneNumber);
-//                    }
-//
-//                    if (payload.containsKey("profile_image_url")) {
-//                        String profileImageUrl = payload.get("profile_image_url");
-//                        // Perform image URL validation here if needed
-//                        existingUser.setProfileImage(profileImageUrl);
-//                    }
-//
-//                    return userRepository.save(existingUser);
-//                });
-//    }

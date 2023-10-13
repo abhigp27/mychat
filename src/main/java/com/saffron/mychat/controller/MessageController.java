@@ -12,18 +12,31 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/messages")
 public class MessageController {
 
+    private final MessageService messageService;
+
     @Autowired
-    private MessageService messageService;
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Message> sendMessage(@RequestBody Message message) {
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Message information cannot be null"));
+        }
+        // Additional validations can be added here, such as checking the chat ID, user ID, or message content
         return messageService.sendMessage(message);
     }
 
     @GetMapping("/chat/{chatId}")
     public Flux<Message> getMessagesByChatId(@PathVariable Long chatId) {
+        if (chatId == null) {
+            return Flux.error(new IllegalArgumentException("Chat ID cannot be null"));
+        }
+        // Additional validations can be added here if necessary
         return messageService.getMessagesByChatId(chatId);
     }
 }
+
 

@@ -1,18 +1,16 @@
 package com.saffron.mychat.controller;
 
 import com.saffron.mychat.entity.User;
+import com.saffron.mychat.handler.CustomExceptions.UnauthorizedException;
+import com.saffron.mychat.handler.CustomExceptions.UserNotFoundException;
 import com.saffron.mychat.services.UserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.saffron.mychat.utils.JwtGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import com.saffron.mychat.handler.CustomExceptions.*;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,11 +18,14 @@ import java.util.Map;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,7 +33,7 @@ public class UserController {
         return userService.registerUser(user)
                 .then(Mono.just(new ResponseEntity<>("User registered successfully", HttpStatus.CREATED)))
                 .onErrorResume(e -> {
-                    if(e.getMessage().equals("User already exists")) {
+                    if (e.getMessage().equals("User already exists")) {
                         return Mono.just(new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT));
                     }
                     return Mono.just(new ResponseEntity<>("Registration failed", HttpStatus.BAD_REQUEST));
@@ -52,12 +53,7 @@ public class UserController {
         return userService.getUserByEmail(email)
                 .flatMap(user -> {
                     if (bCryptPasswordEncoder.matches(password, user.getPasswordHash())) {
-                        String jwtToken = Jwts.builder()
-                                .setSubject(email)
-                                .setExpiration(new Date(System.currentTimeMillis() + 864_000_000)) // 10 days
-                                .signWith(SignatureAlgorithm.HS512, "YourSecretKey")
-                                .compact();
-
+                        String jwtToken = JwtGenerator.generateToken(email);
                         Map<String, String> response = new HashMap<>();
                         response.put("token", jwtToken);
                         return Mono.just(response);
